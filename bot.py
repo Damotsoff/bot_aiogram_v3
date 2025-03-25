@@ -14,7 +14,6 @@ async def main():
     config = load_config()
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher()
-    # dp.include_router(start_router)
     dp.include_router(budget_router)
     dp.include_router(error_router)
 

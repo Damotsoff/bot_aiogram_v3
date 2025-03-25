@@ -6,7 +6,7 @@ from aiogram.utils.deep_linking import create_start_link
 start_router = Router()
 
 
-@start_router.message(F.from_user.id == 399284082, F.text != "/start")
+@start_router.message(F.from_user.id == 123121231, F.text != "/start")
 async def is_admin(message: types.Message):
     await message.answer("Hello my Creator!")
 
