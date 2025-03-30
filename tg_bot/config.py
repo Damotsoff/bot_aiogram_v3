@@ -5,11 +5,13 @@ from environs import Env
 @dataclass
 class TgBot:
     token: str
+    admin: int
 
     @classmethod
     def from_env(cls, env: Env) -> "TgBot":
         token = env.str("BOT_TOKEN")
-        return TgBot(token=token)
+        admin = env.int("ADMIN")
+        return TgBot(token=token, admin=admin)
 
 
 @dataclass
