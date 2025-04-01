@@ -29,6 +29,12 @@ async def get_posution(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
 
 
+@router.callback_query(CounterCallback.filter(F.action == "back"))
+async def get_posution(callback: CallbackQuery):
+    await callback.message.edit_text(
+        text="Меню", reply_markup=main_menu_kb()
+    )
+
 @router.callback_query(CounterCallback.filter(F.action == "view_count"))
 async def view_results(callback: CallbackQuery):
     results = await ShopManager.view_position(callback.from_user.id)

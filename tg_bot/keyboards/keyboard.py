@@ -256,6 +256,15 @@ def counter_kb(user_id: int = 0, quantity: int = 0, item: str = "test"):
                     ).pack(),
                 )
             ],
+
+            [
+                InlineKeyboardButton(
+                    text="Назад",
+                    callback_data=CounterCallback(
+                        id=user_id, quantity=quantity, item=item, action="back"
+                    ).pack(),
+                )
+            ],
         ]
     )
 
