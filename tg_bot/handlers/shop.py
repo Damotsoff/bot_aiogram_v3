@@ -58,18 +58,15 @@ async def purchased(callback: CallbackQuery, callback_data: ProductCallback):
         await callback.message.edit_text(
             text="Товар закончился", reply_markup=shop_menu_kb()
         )
-    elif (
-        product.quantity >= 1
-        and balance >= callback_data.price
-    ):
+    elif product.quantity >= 1 and balance >= callback_data.price:
         await ShopManager.update_products(callback_data.id)
-        await ShopManager.update_balance(
-            callback.from_user.id, callback_data.price
-        )
+        await ShopManager.update_balance(callback.from_user.id, callback_data.price)
         await callback.message.edit_text(
             text=f"Поздравляю Вы купили 1 {callback_data.product}.Остаток обновлен.",
             reply_markup=shop_menu_kb(),
         )
     else:
-        await callback.message.edit_text(text="недостаточно средств",reply_markup=shop_menu_kb())
+        await callback.message.edit_text(
+            text="недостаточно средств", reply_markup=shop_menu_kb()
+        )
         return

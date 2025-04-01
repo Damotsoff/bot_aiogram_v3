@@ -22,5 +22,6 @@ async def open_shop(callback: CallbackQuery):
 async def view_balance(callback: CallbackQuery):
     balance = await ShopManager.get_balance(callback.from_user.id)
     await callback.message.edit_text(
-        text=f"ваш баланс составляет {balance}", reply_markup=profile_kb(balance=balance)
+        text=f"ваш баланс составляет {balance}",
+        reply_markup=profile_kb(balance=balance),
     )

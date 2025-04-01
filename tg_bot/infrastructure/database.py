@@ -1,4 +1,4 @@
-from config import load_config
+from tg_bot.config import load_config
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import (
     async_sessionmaker,

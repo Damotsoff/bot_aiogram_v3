@@ -4,6 +4,7 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from tg_bot.keyboards.keyboard import support_kb
 from tg_bot.keyboards.callback_data import MainMenuCallback, SupportCallback
+from tg_bot.services.shop_manager import ShopManager
 
 
 router = Router()
@@ -25,6 +26,10 @@ async def support(callback: CallbackQuery):
 async def process_support_text(message: Message, state: FSMContext):
     user_id = message.from_user.id
     support_text = message.text
+    full_name = message.from_user.full_name
+    await ShopManager.add_ticket(
+        user_id=user_id, text=support_text, full_name=full_name
+    )
 
     await message.answer(
         text="🆘 Новое обращение:\n"

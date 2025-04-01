@@ -12,7 +12,6 @@ from tg_bot.keyboards.callback_data import (
 )
 
 
-
 # Главное меню
 def main_menu_kb():
     return InlineKeyboardMarkup(
@@ -104,7 +103,7 @@ def fruits_menu_kb(products) -> InlineKeyboardMarkup:
         ]
     )
 
-    return InlineKeyboardMarkup(inline_keyboard=buttons) 
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 def vegetables_menu_kb(products) -> InlineKeyboardMarkup:
@@ -130,13 +129,14 @@ def vegetables_menu_kb(products) -> InlineKeyboardMarkup:
         [
             InlineKeyboardButton(
                 text="🔙 Назад",
-                callback_data=ShopMenuCallback(category="vegetables", action="back").pack(),
+                callback_data=ShopMenuCallback(
+                    category="vegetables", action="back"
+                ).pack(),
             )
         ]
     )
 
     return InlineKeyboardMarkup(inline_keyboard=buttons)
-
 
 
 def profile_kb(balance: int = 0):

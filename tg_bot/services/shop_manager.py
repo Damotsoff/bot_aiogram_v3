@@ -1,7 +1,6 @@
 from sqlalchemy import select
-from datetime import datetime
-from infrastructure.database import session_
-from models.models import Balance, Product, Support
+from tg_bot.infrastructure.database import session_
+from tg_bot.models.models import Balance, Product, Support
 
 
 from random import randint
@@ -27,16 +26,13 @@ class ShopManager:
             )
             if result:
                 return result.scalars().all()
-            
+
     @classmethod
     async def get_products(cls, id: int):
         async with session_() as session:
             result = await session.execute(select(Product).where(Product.id == id))
             if result:
                 return result.scalars().first()
-            
-
-
 
     @classmethod
     async def get_vegetables(cls) -> Product | None:
@@ -50,9 +46,7 @@ class ShopManager:
     @classmethod
     async def update_products(cls, item_id: int):
         async with session_() as session:
-            result = await session.execute(
-                select(Product).where(Product.id == item_id)
-            )
+            result = await session.execute(select(Product).where(Product.id == item_id))
             quantity = result.scalars().first()
             if quantity:
                 quantity.quantity -= 1
@@ -85,6 +79,13 @@ class ShopManager:
             await session.commit()
 
     @classmethod
+    async def add_ticket(cls, **kwargs):
+        async with session_() as session:
+            ticket = Support(**kwargs)
+            session.add(ticket)
+            await session.commit()
+
+    @classmethod
     async def insert_sample_data(cls):
         async with session_() as session:
             # Вставка продуктов
@@ -100,7 +101,10 @@ class ShopManager:
             ]
 
             # Вставка обращения в поддержку
-            support = Support(user_id=123, text="Проблема с заказом",)
+            support = Support(
+                user_id=123,
+                text="Проблема с заказом",
+            )
 
             # Добавляем все объекты в сессию
             session.add_all(products)
