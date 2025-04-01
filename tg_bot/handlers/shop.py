@@ -26,9 +26,6 @@ async def start(message: Message):
 
 @router.callback_query(MainMenuCallback.filter(F.section == "shop"))
 async def open_shop(callback: CallbackQuery):
-    await ShopManager.add_user_id(
-        user_id=callback.from_user.id, full_name=callback.from_user.full_name
-    )
     await callback.message.edit_text("Выберите категорию:", reply_markup=shop_menu_kb())
 
 

@@ -16,7 +16,7 @@ class ShopManager:
             balance = result.scalars().first()
             if balance:
                 return balance
-            return False
+            return 0
 
     @classmethod
     async def get_fruits(cls) -> Product | None:
@@ -64,7 +64,7 @@ class ShopManager:
                 await session.commit()
 
     @classmethod
-    async def add_user_id(cls, user_id: int, full_name: str):
+    async def add_user_id(cls, user_id: int, full_name: str,balance: int):
         async with session_() as session:
             user = await session.execute(
                 select(Balance).where(Balance.user_id == user_id)
@@ -73,7 +73,7 @@ class ShopManager:
             if user:
                 return
             balance = Balance(
-                user_id=user_id, balance=randint(1, 5000), full_name=full_name
+                user_id=user_id, balance=balance, full_name=full_name
             )
             session.add(balance)
             await session.commit()
@@ -88,7 +88,6 @@ class ShopManager:
     @classmethod
     async def insert_sample_data(cls):
         async with session_() as session:
-            # Вставка продуктов
             products = [
                 Product(product="Груши", category="fruits", quantity=5, price=250),
                 Product(product="Яблоки", category="fruits", quantity=10, price=150),
@@ -100,17 +99,6 @@ class ShopManager:
                 ),
             ]
 
-            # Вставка обращения в поддержку
-            support = Support(
-                user_id=123,
-                text="Проблема с заказом",
-            )
-
-            # Добавляем все объекты в сессию
             session.add_all(products)
-            # session.add(balance)
-            session.add(support)
-
-            # Фиксируем изменения
             await session.commit()
             print("Данные успешно добавлены")

@@ -152,6 +152,14 @@ def profile_kb(balance: int = 0):
             ],
             [
                 InlineKeyboardButton(
+                    text="💲 Пополнить баланс",
+                    callback_data=ViewProfileCallback(
+                        balance=0, action="balance"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     text="🔙 Главное меню",
                     callback_data=MainMenuCallback(section="", action="back").pack(),
                 )
