@@ -7,6 +7,13 @@ class MainMenuCallback(CallbackData, prefix="main"):
     action: str
 
 
+class CounterCallback(CallbackData, prefix="counter"):
+    id: int = 0
+    action: str
+    quantity: int = 0
+    item: str = "test"
+
+
 class ShopMenuCallback(CallbackData, prefix="shop"):
     category: str  # "fruits", "vegetables"
     action: str  # "list", "back"

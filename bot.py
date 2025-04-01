@@ -13,6 +13,7 @@ from tg_bot.handlers.wine import router as wine_router
 from tg_bot.handlers.spirits import router as spirits_router
 from tg_bot.handlers.profile import router as profile_router
 from tg_bot.handlers.support import router as support_router
+from tg_bot.handlers.counter import router as counter_router
 from tg_bot.handlers.start import start_router
 from tg_bot.models.models import create_tables, delete_tables
 from tg_bot.services.shop_manager import ShopManager
@@ -26,6 +27,7 @@ async def main():
     config = load_config()
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher()
+    dp.include_router(counter_router)
     dp.include_router(spirits_router)
     dp.include_router(wine_router)
     dp.include_router(beer_router)

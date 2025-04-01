@@ -9,6 +9,7 @@ from tg_bot.keyboards.callback_data import (
     ProductCallback,
     ViewProfileCallback,
     SupportCallback,
+    CounterCallback,
 )
 
 
@@ -32,6 +33,12 @@ def main_menu_kb():
                 InlineKeyboardButton(
                     text="👤 Профиль",
                     callback_data=MainMenuCallback(section="profile", action="").pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=" Посчитайчик",
+                    callback_data=MainMenuCallback(section="counter", action="").pack(),
                 )
             ],
         ]
@@ -224,6 +231,29 @@ def support_kb(user_id: int | None = None):
                 InlineKeyboardButton(
                     text="🔙 Главное меню",
                     callback_data=MainMenuCallback(section="", action="back").pack(),
+                )
+            ],
+        ]
+    )
+
+
+def counter_kb(user_id: int = 0, quantity: int = 0, item: str = "test"):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="Добавить хрючево:)",
+                    callback_data=CounterCallback(
+                        id=user_id, quantity=quantity, item=item, action="create_count"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Вывести мое хрючево:)",
+                    callback_data=CounterCallback(
+                        id=user_id, quantity=quantity, item=item, action="view_count"
+                    ).pack(),
                 )
             ],
         ]

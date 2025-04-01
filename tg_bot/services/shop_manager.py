@@ -1,13 +1,41 @@
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from tg_bot.infrastructure.database import session_
-from tg_bot.models.models import Balance, History, Product, Support
+from tg_bot.models.models import Balance, History, Product, Support, Counter
 
 
 from random import randint
 
 
 class ShopManager:
+    @classmethod
+    async def add_position(cls, **kwargs):
+        async with session_() as session:
+            session.add(Counter(**kwargs))
+            await session.commit()
+
+    @classmethod
+    async def view_position(cls, user_id: int):
+        async with session_() as session:
+            result = await session.execute(
+                select(Counter).where(Counter.user_id == user_id)
+            )
+            history = result.scalars().all()
+            if not history:
+                return None
+            formatted_history = []
+            for entry in history:
+                formatted_entry = {
+                    "user_id": entry.user_id,
+                    "full_name": entry.full_name,
+                    "item": entry.item,
+                    "quantity": entry.quantity,
+                    "price": entry.price,
+                    "created_at": entry.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "total": entry.total
+                }
+                formatted_history.append(formatted_entry)
+            return formatted_history
 
     @classmethod
     async def sum_history(cls, user_id: int):
@@ -70,7 +98,7 @@ class ShopManager:
             )
             if result:
                 return result.scalars().all()
-    
+
     @classmethod
     async def get_beer(cls) -> Product | None:
         async with session_() as session:
@@ -79,7 +107,7 @@ class ShopManager:
             )
             if result:
                 return result.scalars().all()
-            
+
     @classmethod
     async def get_wine(cls) -> Product | None:
         async with session_() as session:
@@ -88,7 +116,6 @@ class ShopManager:
             )
             if result:
                 return result.scalars().all()
-            
 
     @classmethod
     async def get_spirits(cls) -> Product | None:
@@ -174,44 +201,113 @@ class ShopManager:
                 Product(product="Лимоны", category="fruits", quantity=10, price=350),
                 Product(product="Апельсины", category="fruits", quantity=10, price=341),
                 Product(product="Ананасы", category="fruits", quantity=10, price=500),
-                
                 # Овощи (старые данные)
-                Product(product="Помидоры", category="vegetables", quantity=4, price=123),
-                Product(product="Брокколи", category="vegetables", quantity=10, price=122),
-                Product(product="Огурцы", category="vegetables", quantity=44, price=300),
-                Product(product="Кукуруза", category="vegetables", quantity=44, price=300),
-                
+                Product(
+                    product="Помидоры", category="vegetables", quantity=4, price=123
+                ),
+                Product(
+                    product="Брокколи", category="vegetables", quantity=10, price=122
+                ),
+                Product(
+                    product="Огурцы", category="vegetables", quantity=44, price=300
+                ),
+                Product(
+                    product="Кукуруза", category="vegetables", quantity=44, price=300
+                ),
                 # Пиво
-                Product(product="Guinness Draught", category="beer", quantity=20, price=450, 
-                    description="Ирландский стаут с кремовой текстурой"),
-                Product(product="Heineken", category="beer", quantity=30, price=350,
-                    description="Голландский светлый лагер"),
-                Product(product="Балтика 9", category="beer", quantity=50, price=120,
-                    description="Крепкое российское пиво"),
-                Product(product="Hoegaarden", category="beer", quantity=15, price=400,
-                    description="Бельгийское пшеничное пиво с цитрусовыми нотами"),
-                
+                Product(
+                    product="Guinness Draught",
+                    category="beer",
+                    quantity=20,
+                    price=450,
+                    description="Ирландский стаут с кремовой текстурой",
+                ),
+                Product(
+                    product="Heineken",
+                    category="beer",
+                    quantity=30,
+                    price=350,
+                    description="Голландский светлый лагер",
+                ),
+                Product(
+                    product="Балтика 9",
+                    category="beer",
+                    quantity=50,
+                    price=120,
+                    description="Крепкое российское пиво",
+                ),
+                Product(
+                    product="Hoegaarden",
+                    category="beer",
+                    quantity=15,
+                    price=400,
+                    description="Бельгийское пшеничное пиво с цитрусовыми нотами",
+                ),
                 # Вино
-                Product(product="Château Margaux", category="wine", quantity=5, price=15000,
-                    description="Французское красное вино премиум класса"),
-                Product(product="Santa Margherita Pinot Grigio", category="wine", quantity=8, price=3200,
-                    description="Итальянское белое сухое вино"),
-                Product(product="Киндзмараули", category="wine", quantity=12, price=2500,
-                    description="Грузинское полусладкое красное вино"),
-                Product(product="Prosecco DOC", category="wine", quantity=18, price=1800,
-                    description="Итальянское игристое вино"),
-                
+                Product(
+                    product="Château Margaux",
+                    category="wine",
+                    quantity=5,
+                    price=15000,
+                    description="Французское красное вино премиум класса",
+                ),
+                Product(
+                    product="Santa Margherita Pinot Grigio",
+                    category="wine",
+                    quantity=8,
+                    price=3200,
+                    description="Итальянское белое сухое вино",
+                ),
+                Product(
+                    product="Киндзмараули",
+                    category="wine",
+                    quantity=12,
+                    price=2500,
+                    description="Грузинское полусладкое красное вино",
+                ),
+                Product(
+                    product="Prosecco DOC",
+                    category="wine",
+                    quantity=18,
+                    price=1800,
+                    description="Итальянское игристое вино",
+                ),
                 # Крепкий алкоголь
-                Product(product="Johnnie Walker Blue Label", category="spirits", quantity=3, price=25000,
-                    description="Шотландский виски премиум класса"),
-                Product(product="Beluga Noble", category="spirits", quantity=10, price=4500,
-                    description="Российская премиальная водка"),
-                Product(product="Havana Club 7", category="spirits", quantity=7, price=2800,
-                    description="Кубинский выдержанный ром"),
-                Product(product="Grey Goose", category="spirits", quantity=5, price=5200,
-                    description="Французская люксовая водка из пшеницы"),
-                Product(product="Hennessy VSOP", category="spirits", quantity=4, price=6800,
-                    description="Коньяк премиум класса")
+                Product(
+                    product="Johnnie Walker Blue Label",
+                    category="spirits",
+                    quantity=3,
+                    price=25000,
+                    description="Шотландский виски премиум класса",
+                ),
+                Product(
+                    product="Beluga Noble",
+                    category="spirits",
+                    quantity=10,
+                    price=4500,
+                    description="Российская премиальная водка",
+                ),
+                Product(
+                    product="Havana Club 7",
+                    category="spirits",
+                    quantity=7,
+                    price=2800,
+                    description="Кубинский выдержанный ром",
+                ),
+                Product(
+                    product="Grey Goose",
+                    category="spirits",
+                    quantity=5,
+                    price=5200,
+                    description="Французская люксовая водка из пшеницы",
+                ),
+                Product(
+                    product="Hennessy VSOP",
+                    category="spirits",
+                    quantity=4,
+                    price=6800,
+                    description="Коньяк премиум класса",
+                ),
             ]
 
             session.add_all(products)

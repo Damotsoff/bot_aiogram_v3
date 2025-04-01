@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import String, BigInteger, ForeignKey
+from sqlalchemy import Integer, String, BigInteger, ForeignKey, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import AsyncAttrs
@@ -20,9 +20,24 @@ class Product(Base):
     action: Mapped[str] = mapped_column(default="view")
     price: Mapped[int] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(), nullable=False)
-    description:Mapped[str] = mapped_column(nullable=True,default='test')
+    description: Mapped[str] = mapped_column(nullable=True, default="test")
 
     purchases: Mapped[list["History"]] = relationship(back_populates="product")
+
+
+class Counter(Base):
+    __tablename__ = "counter"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    full_name: Mapped[str] = mapped_column(nullable=False)
+    item: Mapped[str] = mapped_column(String(100), nullable=False)
+    quantity: Mapped[int] = mapped_column(nullable=False)
+    price: Mapped[int] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now(), nullable=False)
+    @property
+    def total(self) -> int:
+        """Вычисляет total как произведение quantity и price."""
+        return self.quantity * (self.price or 0)  
 
 
 class Balance(Base):

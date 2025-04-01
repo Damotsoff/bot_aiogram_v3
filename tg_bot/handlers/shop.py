@@ -51,7 +51,7 @@ async def view_product(callback: CallbackQuery, callback_data: ProductCallback):
 async def purchased(callback: CallbackQuery, callback_data: ProductCallback):
     balance = await ShopManager.get_balance(callback.from_user.id)
     product = await ShopManager.get_products(id=callback_data.id)
-    assert balance >= 0,"Значение не может быть меньше нуля!"
+    assert balance >= 0, "Значение не может быть меньше нуля!"
     if not product:
         return
     if product.quantity < 1:

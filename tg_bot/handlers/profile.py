@@ -72,9 +72,9 @@ async def get_history_(callback: CallbackQuery):
     answer = "\n".join(formatted_history)
     total_price = await ShopManager.sum_history(user_id=callback.from_user.id)
     await callback.message.edit_text(
-        text=f"История покупок:\n\n{answer}\n\n Сумма выкупа:{total_price}", reply_markup=profile_kb()
+        text=f"История покупок:\n\n{answer}\n\n Сумма выкупа:{total_price}",
+        reply_markup=profile_kb(),
     )
-
 
 
 @router.callback_query(ViewProfileCallback.filter(F.action == "export_history"))
@@ -82,11 +82,10 @@ async def get_history(callback: CallbackQuery):
     history = await ShopManager.get_history(user_id=callback.from_user.id)
     if not history:
         await callback.message.edit_text(
-            text="История пустая.", 
-            reply_markup=profile_kb()
+            text="История пустая.", reply_markup=profile_kb()
         )
         return
-    
+
     # Форматируем историю
     formatted_history = []
     for entry in history:
@@ -99,27 +98,23 @@ async def get_history(callback: CallbackQuery):
             "-----------------------------\n"
         )
         formatted_history.append(formatted_entry)
-    
-    # Добавляем общую сумму
+
     total_price = await ShopManager.sum_history(user_id=callback.from_user.id)
     formatted_history.append(f"\nСумма выкупа: {total_price} руб.")
-    
-    # Создаем временный файл
+
     user_id = callback.from_user.id
     file_path = f"history_{user_id}.txt"
-    
+
     with open(file_path, "w", encoding="utf-8") as file:
         file.writelines(formatted_history)
-    
-    # Отправляем файл
+
     try:
         await callback.message.answer_document(
-            document=FSInputFile(file_path),  # Используем FSInputFile
-            caption="📋 Выгрузка истории покупок"
+            document=FSInputFile(file_path), caption="📋 Выгрузка истории покупок"
         )
-        await callback.message.answer(text='Профиль',reply_markup=profile_kb())
+        await callback.message.answer(text="Профиль", reply_markup=profile_kb())
     finally:
-        # Удаляем временный файл
         import os
+
         if os.path.exists(file_path):
             os.remove(file_path)
