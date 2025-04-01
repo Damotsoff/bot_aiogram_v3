@@ -6,12 +6,14 @@ from environs import Env
 class TgBot:
     token: str
     admin: int
+    database_url: str
 
     @classmethod
     def from_env(cls, env: Env) -> "TgBot":
         token = env.str("BOT_TOKEN")
         admin = env.int("ADMIN")
-        return TgBot(token=token, admin=admin)
+        database_url = env.str("DATABASE_URL")
+        return TgBot(token=token, admin=admin, database_url=database_url)
 
 
 @dataclass

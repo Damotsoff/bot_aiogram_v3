@@ -6,11 +6,18 @@ from tg_bot.config import load_config
 from tg_bot.handlers.budget import budget_router
 from tg_bot.middlewares.errors import error_router
 from tg_bot.handlers.shop import router as shop_router
-
+from tg_bot.handlers.fruits import router as fruits_router
+from tg_bot.handlers.vegetables import router as vegetables_router
+from tg_bot.handlers.profile import router as profile_router
+from tg_bot.handlers.support import router as support_router
 from tg_bot.handlers.start import start_router
+from tg_bot.models.models import create_tables
+from tg_bot.services.shop_manager import ShopManager
 
 
 async def main():
+    await create_tables()
+    await ShopManager.insert_sample_data()
     bl.basic_colorized_config(level=logging.INFO)
     config = load_config()
     bot = Bot(token=config.tg_bot.token)
@@ -19,6 +26,10 @@ async def main():
     dp.include_router(budget_router)
     dp.include_router(error_router)
     dp.include_router(shop_router)
+    dp.include_router(fruits_router)
+    dp.include_router(vegetables_router)
+    dp.include_router(profile_router)
+    dp.include_router(support_router)
 
     await dp.start_polling(bot)
     await bot.session.close()
