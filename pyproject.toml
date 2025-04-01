@@ -1,0 +1,2 @@
+[tool.mypy]
+plugins = ["aiogram.contrib.mypy"]

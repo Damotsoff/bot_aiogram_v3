@@ -52,6 +52,4 @@ async def handle_support_request(
 ):
     await callback.message.answer(text="📝 Опишите вашу проблему:", reply_markup=None)
     await state.set_state(SupportStates.waiting_for_support_text)
-
-    # Подтверждаем обработку callback (убираем "часики" на кнопке)
     await callback.answer()

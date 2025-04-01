@@ -11,13 +11,14 @@ from tg_bot.handlers.vegetables import router as vegetables_router
 from tg_bot.handlers.profile import router as profile_router
 from tg_bot.handlers.support import router as support_router
 from tg_bot.handlers.start import start_router
-from tg_bot.models.models import create_tables
+from tg_bot.models.models import create_tables, delete_tables
 from tg_bot.services.shop_manager import ShopManager
 
 
 async def main():
+    # await delete_tables()
     await create_tables()
-    await ShopManager.insert_sample_data()
+    # await ShopManager.insert_sample_data()
     bl.basic_colorized_config(level=logging.INFO)
     config = load_config()
     bot = Bot(token=config.tg_bot.token)

@@ -160,6 +160,22 @@ def profile_kb(balance: int = 0):
             ],
             [
                 InlineKeyboardButton(
+                    text="Посмотреть историю покупок",
+                    callback_data=ViewProfileCallback(
+                        balance=0, action="history"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Выгрузить историю покупок в файл.",
+                    callback_data=ViewProfileCallback(
+                        balance=0, action="export_history"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     text="🔙 Главное меню",
                     callback_data=MainMenuCallback(section="", action="back").pack(),
                 )
