@@ -51,7 +51,7 @@ async def update_balance(callback: CallbackQuery, state: FSMContext):
 
 
 @router.callback_query(ViewProfileCallback.filter(F.action == "history"))
-async def get_history(callback: CallbackQuery):
+async def get_history_(callback: CallbackQuery):
     history = await ShopManager.get_history(user_id=callback.from_user.id)
     if not history:
         await callback.message.edit_text(

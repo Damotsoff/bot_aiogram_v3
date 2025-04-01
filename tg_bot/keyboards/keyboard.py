@@ -60,6 +60,30 @@ def shop_menu_kb():
             ],
             [
                 InlineKeyboardButton(
+                    text="🍺 Пиво",
+                    callback_data=ShopMenuCallback(
+                        category="beer", action="list"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="🍷 Вино",
+                    callback_data=ShopMenuCallback(
+                        category="wine", action="list"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="🥃 Крепкий алкоголь",
+                    callback_data=ShopMenuCallback(
+                        category="spirits", action="list"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     text="🔙 Главное меню",
                     callback_data=MainMenuCallback(section="", action="back").pack(),
                 )

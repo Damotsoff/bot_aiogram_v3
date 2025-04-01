@@ -70,6 +70,34 @@ class ShopManager:
             )
             if result:
                 return result.scalars().all()
+    
+    @classmethod
+    async def get_beer(cls) -> Product | None:
+        async with session_() as session:
+            result = await session.execute(
+                select(Product).where(Product.category == "beer")
+            )
+            if result:
+                return result.scalars().all()
+            
+    @classmethod
+    async def get_wine(cls) -> Product | None:
+        async with session_() as session:
+            result = await session.execute(
+                select(Product).where(Product.category == "wine")
+            )
+            if result:
+                return result.scalars().all()
+            
+
+    @classmethod
+    async def get_spirits(cls) -> Product | None:
+        async with session_() as session:
+            result = await session.execute(
+                select(Product).where(Product.category == "spirits")
+            )
+            if result:
+                return result.scalars().all()
 
     @classmethod
     async def get_products(cls, id: int):
@@ -133,26 +161,59 @@ class ShopManager:
     @classmethod
     async def insert_sample_data(cls):
         async with session_() as session:
+            # Проверяем, есть ли уже данные
+            existing_products = await session.execute(select(Product))
+            if existing_products.scalars().first():
+                print("Тестовые данные уже существуют")
+                return
+
             products = [
+                # Фрукты (старые данные)
                 Product(product="Груши", category="fruits", quantity=5, price=250),
                 Product(product="Яблоки", category="fruits", quantity=10, price=150),
-                Product(
-                    product="Помидоры", category="vegetables", quantity=4, price=123
-                ),
-                Product(
-                    product="Брокколи", category="vegetables", quantity=10, price=122
-                ),
                 Product(product="Лимоны", category="fruits", quantity=10, price=350),
                 Product(product="Апельсины", category="fruits", quantity=10, price=341),
                 Product(product="Ананасы", category="fruits", quantity=10, price=500),
-                Product(
-                    product="Огурцы", category="vegetables", quantity=44, price=300
-                ),
-                Product(
-                    product="Кукуруза", category="vegetables", quantity=44, price=300
-                ),
+                
+                # Овощи (старые данные)
+                Product(product="Помидоры", category="vegetables", quantity=4, price=123),
+                Product(product="Брокколи", category="vegetables", quantity=10, price=122),
+                Product(product="Огурцы", category="vegetables", quantity=44, price=300),
+                Product(product="Кукуруза", category="vegetables", quantity=44, price=300),
+                
+                # Пиво
+                Product(product="Guinness Draught", category="beer", quantity=20, price=450, 
+                    description="Ирландский стаут с кремовой текстурой"),
+                Product(product="Heineken", category="beer", quantity=30, price=350,
+                    description="Голландский светлый лагер"),
+                Product(product="Балтика 9", category="beer", quantity=50, price=120,
+                    description="Крепкое российское пиво"),
+                Product(product="Hoegaarden", category="beer", quantity=15, price=400,
+                    description="Бельгийское пшеничное пиво с цитрусовыми нотами"),
+                
+                # Вино
+                Product(product="Château Margaux", category="wine", quantity=5, price=15000,
+                    description="Французское красное вино премиум класса"),
+                Product(product="Santa Margherita Pinot Grigio", category="wine", quantity=8, price=3200,
+                    description="Итальянское белое сухое вино"),
+                Product(product="Киндзмараули", category="wine", quantity=12, price=2500,
+                    description="Грузинское полусладкое красное вино"),
+                Product(product="Prosecco DOC", category="wine", quantity=18, price=1800,
+                    description="Итальянское игристое вино"),
+                
+                # Крепкий алкоголь
+                Product(product="Johnnie Walker Blue Label", category="spirits", quantity=3, price=25000,
+                    description="Шотландский виски премиум класса"),
+                Product(product="Beluga Noble", category="spirits", quantity=10, price=4500,
+                    description="Российская премиальная водка"),
+                Product(product="Havana Club 7", category="spirits", quantity=7, price=2800,
+                    description="Кубинский выдержанный ром"),
+                Product(product="Grey Goose", category="spirits", quantity=5, price=5200,
+                    description="Французская люксовая водка из пшеницы"),
+                Product(product="Hennessy VSOP", category="spirits", quantity=4, price=6800,
+                    description="Коньяк премиум класса")
             ]
 
             session.add_all(products)
             await session.commit()
-            print("Данные успешно добавлены")
+            print("Тестовые данные успешно добавлены")

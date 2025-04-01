@@ -8,6 +8,9 @@ from tg_bot.middlewares.errors import error_router
 from tg_bot.handlers.shop import router as shop_router
 from tg_bot.handlers.fruits import router as fruits_router
 from tg_bot.handlers.vegetables import router as vegetables_router
+from tg_bot.handlers.beer import router as beer_router
+from tg_bot.handlers.wine import router as wine_router
+from tg_bot.handlers.spirits import router as spirits_router
 from tg_bot.handlers.profile import router as profile_router
 from tg_bot.handlers.support import router as support_router
 from tg_bot.handlers.start import start_router
@@ -23,6 +26,9 @@ async def main():
     config = load_config()
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher()
+    dp.include_router(spirits_router)
+    dp.include_router(wine_router)
+    dp.include_router(beer_router)
     dp.include_router(start_router)
     dp.include_router(budget_router)
     dp.include_router(error_router)

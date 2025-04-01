@@ -20,6 +20,7 @@ class Product(Base):
     action: Mapped[str] = mapped_column(default="view")
     price: Mapped[int] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(), nullable=False)
+    description:Mapped[str] = mapped_column(nullable=True,default='test')
 
     purchases: Mapped[list["History"]] = relationship(back_populates="product")
 
