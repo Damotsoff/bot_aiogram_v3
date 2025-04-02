@@ -7,6 +7,10 @@ class MainMenuCallback(CallbackData, prefix="main"):
     action: str
 
 
+class AdminCallback(CallbackData, prefix="admin"):
+    action: str
+
+
 class CounterCallback(CallbackData, prefix="counter"):
     id: int = 0
     action: str

@@ -10,6 +10,7 @@ from tg_bot.keyboards.callback_data import (
     ViewProfileCallback,
     SupportCallback,
     CounterCallback,
+    AdminCallback,
 )
 
 
@@ -39,6 +40,31 @@ def main_menu_kb():
                 InlineKeyboardButton(
                     text=" Посчитайчик",
                     callback_data=MainMenuCallback(section="counter", action="").pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=" Администрирование",
+                    callback_data=MainMenuCallback(section="admin", action="").pack(),
+                )
+            ],
+        ]
+    )
+
+
+def admin_kb(**kwargs):
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="Добавить товар",
+                    callback_data=AdminCallback(action="view").pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="назад",
+                    callback_data=AdminCallback(action="back").pack(),
                 )
             ],
         ]
@@ -256,7 +282,6 @@ def counter_kb(user_id: int = 0, quantity: int = 0, item: str = "test"):
                     ).pack(),
                 )
             ],
-
             [
                 InlineKeyboardButton(
                     text="Назад",

@@ -34,10 +34,11 @@ class Counter(Base):
     quantity: Mapped[int] = mapped_column(nullable=False)
     price: Mapped[int] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(), nullable=False)
+
     @property
     def total(self) -> int:
         """Вычисляет total как произведение quantity и price."""
-        return self.quantity * (self.price or 0)  
+        return self.quantity * (self.price or 0)
 
 
 class Balance(Base):

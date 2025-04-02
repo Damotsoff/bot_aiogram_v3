@@ -1,17 +1,17 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.filters import Command
+from tg_bot.config import load_config
+
 
 from tg_bot.keyboards.callback_data import (
     MainMenuCallback,
     ProductCallback,
     ShopMenuCallback,
 )
-from tg_bot.keyboards.keyboard import (
-    main_menu_kb,
-    shop_menu_kb,
-    purchased_kb,
-)
+from tg_bot.keyboards.keyboard import main_menu_kb, shop_menu_kb, purchased_kb, admin_kb
+
+ADMIN = load_config().tg_bot.admin
 
 
 from tg_bot.services.shop_manager import ShopManager
@@ -22,6 +22,12 @@ router = Router()
 @router.message(Command("start"))
 async def start(message: Message):
     await message.answer("Главное меню:", reply_markup=main_menu_kb())
+
+
+@router.callback_query(MainMenuCallback.filter(F.section == "admin"))
+async def open_shop(callback: CallbackQuery):
+    if callback.from_user.id == ADMIN:
+        await callback.message.edit_text("Админ панель:", reply_markup=admin_kb())
 
 
 @router.callback_query(MainMenuCallback.filter(F.section == "shop"))

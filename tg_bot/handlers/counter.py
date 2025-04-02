@@ -31,9 +31,8 @@ async def get_posution(callback: CallbackQuery, state: FSMContext):
 
 @router.callback_query(CounterCallback.filter(F.action == "back"))
 async def get_posution(callback: CallbackQuery):
-    await callback.message.edit_text(
-        text="Меню", reply_markup=main_menu_kb()
-    )
+    await callback.message.edit_text(text="Меню", reply_markup=main_menu_kb())
+
 
 @router.callback_query(CounterCallback.filter(F.action == "view_count"))
 async def view_results(callback: CallbackQuery):
@@ -55,7 +54,7 @@ async def view_results(callback: CallbackQuery):
         answer = "\n".join(formatted_history)
         await callback.message.edit_text(text=f"{answer}", reply_markup=main_menu_kb())
         return
-    await callback.message.edit_text(text='нет информации',reply_markup=main_menu_kb())
+    await callback.message.edit_text(text="нет информации", reply_markup=main_menu_kb())
 
 
 @router.message(SetCounters.AddItem)

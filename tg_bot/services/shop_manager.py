@@ -4,9 +4,6 @@ from tg_bot.infrastructure.database import session_
 from tg_bot.models.models import Balance, History, Product, Support, Counter
 
 
-from random import randint
-
-
 class ShopManager:
     @classmethod
     async def add_position(cls, **kwargs):
@@ -32,7 +29,7 @@ class ShopManager:
                     "quantity": entry.quantity,
                     "price": entry.price,
                     "created_at": entry.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                    "total": entry.total
+                    "total": entry.total,
                 }
                 formatted_history.append(formatted_entry)
             return formatted_history
@@ -186,6 +183,13 @@ class ShopManager:
             await session.commit()
 
     @classmethod
+    async def add_data(cls, **kwargs):
+        async with session_() as session:
+            if kwargs:
+                session.add(Product(**kwargs))
+                await session.commit()
+
+    @classmethod
     async def insert_sample_data(cls):
         async with session_() as session:
             # Проверяем, есть ли уже данные
@@ -195,13 +199,11 @@ class ShopManager:
                 return
 
             products = [
-                # Фрукты (старые данные)
                 Product(product="Груши", category="fruits", quantity=5, price=250),
                 Product(product="Яблоки", category="fruits", quantity=10, price=150),
                 Product(product="Лимоны", category="fruits", quantity=10, price=350),
                 Product(product="Апельсины", category="fruits", quantity=10, price=341),
                 Product(product="Ананасы", category="fruits", quantity=10, price=500),
-                # Овощи (старые данные)
                 Product(
                     product="Помидоры", category="vegetables", quantity=4, price=123
                 ),
@@ -214,7 +216,6 @@ class ShopManager:
                 Product(
                     product="Кукуруза", category="vegetables", quantity=44, price=300
                 ),
-                # Пиво
                 Product(
                     product="Guinness Draught",
                     category="beer",
@@ -243,7 +244,6 @@ class ShopManager:
                     price=400,
                     description="Бельгийское пшеничное пиво с цитрусовыми нотами",
                 ),
-                # Вино
                 Product(
                     product="Château Margaux",
                     category="wine",
@@ -272,7 +272,6 @@ class ShopManager:
                     price=1800,
                     description="Итальянское игристое вино",
                 ),
-                # Крепкий алкоголь
                 Product(
                     product="Johnnie Walker Blue Label",
                     category="spirits",

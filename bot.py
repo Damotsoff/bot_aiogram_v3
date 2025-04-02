@@ -14,19 +14,21 @@ from tg_bot.handlers.spirits import router as spirits_router
 from tg_bot.handlers.profile import router as profile_router
 from tg_bot.handlers.support import router as support_router
 from tg_bot.handlers.counter import router as counter_router
+from tg_bot.handlers.admin import router as admin_roter
 from tg_bot.handlers.start import start_router
 from tg_bot.models.models import create_tables, delete_tables
 from tg_bot.services.shop_manager import ShopManager
 
 
 async def main():
-    # await delete_tables()
+    await delete_tables()
     await create_tables()
-    # await ShopManager.insert_sample_data()
+    await ShopManager.insert_sample_data()
     bl.basic_colorized_config(level=logging.INFO)
     config = load_config()
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher()
+    dp.include_router(admin_roter)
     dp.include_router(counter_router)
     dp.include_router(spirits_router)
     dp.include_router(wine_router)

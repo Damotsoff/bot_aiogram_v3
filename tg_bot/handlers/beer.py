@@ -13,5 +13,6 @@ router = Router()
 async def show_fruits(callback: CallbackQuery, callback_data: ProductCallback):
     beer = await ShopManager.get_beer()
     await callback.message.edit_text(
-        "В наличии:", reply_markup=fruits_menu_kb(products=beer)
+        "В наличии:",
+        reply_markup=fruits_menu_kb(products=beer),
     )
