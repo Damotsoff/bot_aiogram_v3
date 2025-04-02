@@ -63,6 +63,12 @@ def admin_kb(**kwargs):
             ],
             [
                 InlineKeyboardButton(
+                    text="удалить",
+                    callback_data=AdminCallback(action="delete").pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     text="назад",
                     callback_data=AdminCallback(action="back").pack(),
                 )

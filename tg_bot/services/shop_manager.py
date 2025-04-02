@@ -190,6 +190,11 @@ class ShopManager:
                 await session.commit()
 
     @classmethod
+    async def delete_data(cls,data):
+        async with session_() as session:
+            await session.delete(select(Product).where(Product.product==data))
+
+    @classmethod
     async def insert_sample_data(cls):
         async with session_() as session:
             # Проверяем, есть ли уже данные

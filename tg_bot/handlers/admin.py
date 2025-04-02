@@ -12,6 +12,10 @@ class ProductsStates(StatesGroup):
     AddProducts = State()
 
 
+class DeleteProductState(StatesGroup):
+    Position = State()
+
+
 router = Router()
 
 
@@ -41,3 +45,17 @@ async def show_admin(callback: CallbackQuery):
         "Меню",
         reply_markup=main_menu_kb(),
     )
+
+@router.callback_query(AdminCallback.filter(F.action == "delete"))
+async def delete_user(callback: CallbackQuery, state: FSMContext):
+    await state.set_state(DeleteProductState.Position)
+    await callback.message.edit_text(text='Введите наименование товара',reply_markup=None)
+
+
+@router.message(DeleteProductState.Position)
+async def complete_delete(message: Message, state: FSMContext):
+    data = message.text
+    if data:
+        await ShopManager.delete_data(data)
+        await message.answer(text='Готово',reply_markup=admin_kb())
+        await state.clear()
