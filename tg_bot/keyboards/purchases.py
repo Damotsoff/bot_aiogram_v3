@@ -1,5 +1,9 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from tg_bot.keyboards.callback_data import BuyItemCallback, CheckTransaCallback
+from tg_bot.keyboards.callback_data import (
+    BuyItemCallback,
+    CheckTransaCallback,
+    MainMenuCallback,
+)
 
 
 def buy_keyboard(item_id: int):
@@ -9,6 +13,19 @@ def buy_keyboard(item_id: int):
                 InlineKeyboardButton(
                     text="купить",
                     callback_data=BuyItemCallback(item_id=item_id, action="buy").pack(),
+                )
+            ]
+        ]
+    )
+
+
+def back_keyboard():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="назад",
+                    callback_data=MainMenuCallback(section="shop", action="").pack(),
                 )
             ]
         ]
