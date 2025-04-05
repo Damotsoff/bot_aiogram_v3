@@ -123,6 +123,14 @@ def shop_menu_kb():
             ],
             [
                 InlineKeyboardButton(
+                    text="📕 Книги по программированию",
+                    callback_data=ShopMenuCallback(
+                        category="books", action="list"
+                    ).pack(),
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     text="🔙 Главное меню",
                     callback_data=MainMenuCallback(section="", action="back").pack(),
                 )

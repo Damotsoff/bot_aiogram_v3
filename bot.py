@@ -14,6 +14,7 @@ from tg_bot.handlers.spirits import router as spirits_router
 from tg_bot.handlers.profile import router as profile_router
 from tg_bot.handlers.support import router as support_router
 from tg_bot.handlers.counter import router as counter_router
+from tg_bot.handlers.pay_for_item import router as purchased_router
 from tg_bot.handlers.admin import router as admin_roter
 from tg_bot.handlers.start import start_router
 from tg_bot.models.models import create_tables, delete_tables
@@ -41,6 +42,7 @@ async def main():
     dp.include_router(vegetables_router)
     dp.include_router(profile_router)
     dp.include_router(support_router)
+    dp.include_router(purchased_router)
 
     await dp.start_polling(bot)
     await bot.session.close()

@@ -7,6 +7,15 @@ class MainMenuCallback(CallbackData, prefix="main"):
     action: str
 
 
+class BuyItemCallback(CallbackData, prefix="buy"):
+    item_id: int
+    action: str
+
+
+class CheckTransaCallback(CallbackData, prefix="check_transa"):
+    action: str
+
+
 class AdminCallback(CallbackData, prefix="admin"):
     action: str
 
