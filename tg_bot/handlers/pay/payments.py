@@ -6,7 +6,7 @@ from aiogram.utils.markdown import hlink
 from tg_bot.data.items import items
 from tg_bot.keyboards.callback_data import ProductCallback
 from tg_bot.services.shop_manager import ShopManager
-from tg_bot.keyboards.keyboard import main_menu_kb
+from tg_bot.keyboards.keyboard import main_menu_kb,shop_menu_kb
 from tg_bot.keyboards.purchases import check_transa_kb
 from tg_bot.states.states import Pay
 from tg_bot.keyboards.callback_data import (

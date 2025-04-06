@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery
 from tg_bot.data.items import items
 from tg_bot.keyboards.purchases import books_keyboard,buy_keyboard
 from tg_bot.keyboards.keyboard import shop_menu_kb
