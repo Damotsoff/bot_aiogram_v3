@@ -1,18 +1,12 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup
+from tg_bot.states.states import SetCounters
 from tg_bot.keyboards.callback_data import MainMenuCallback, CounterCallback
 from tg_bot.keyboards.keyboard import counter_kb, main_menu_kb
 from tg_bot.services.shop_manager import ShopManager
 
 router = Router()
-
-
-class SetCounters(StatesGroup):
-    AddPosition = State()
-    AddItem = State()
-    AddPrice = State()
 
 
 @router.callback_query(MainMenuCallback.filter(F.section == "counter"))

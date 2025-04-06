@@ -1,17 +1,13 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message, FSInputFile
-from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
+from tg_bot.states.states import StateBalance
 from tg_bot.keyboards.keyboard import profile_kb
 from tg_bot.keyboards.callback_data import MainMenuCallback, ViewProfileCallback
 from tg_bot.services.shop_manager import ShopManager
 
 
 router = Router()
-
-
-class StateBalance(StatesGroup):
-    balance = State()
 
 
 @router.callback_query(MainMenuCallback.filter(F.section == "profile"))

@@ -1,19 +1,11 @@
 from aiogram import Router, F
+from aiogram.types import Message
 from aiogram.types import CallbackQuery
-from tg_bot.keyboards.callback_data import ShopMenuCallback, AdminCallback
+from aiogram.fsm.context import FSMContext
+from tg_bot.keyboards.callback_data import AdminCallback
 from tg_bot.keyboards.keyboard import admin_kb, main_menu_kb
 from tg_bot.services.shop_manager import ShopManager
-from aiogram.fsm.state import State, StatesGroup
-from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
-
-
-class ProductsStates(StatesGroup):
-    AddProducts = State()
-
-
-class DeleteProductState(StatesGroup):
-    Position = State()
+from tg_bot.states.states import ProductsStates, DeleteProductState
 
 
 router = Router()

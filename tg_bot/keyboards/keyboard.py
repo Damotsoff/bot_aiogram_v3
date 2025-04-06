@@ -14,7 +14,6 @@ from tg_bot.keyboards.callback_data import (
 )
 
 
-# Главное меню
 def main_menu_kb():
     return InlineKeyboardMarkup(
         inline_keyboard=[

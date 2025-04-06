@@ -10,7 +10,7 @@ router = Router()
 @router.callback_query(
     ShopMenuCallback.filter((F.action == "list") & (F.category == "fruits"))
 )
-async def show_fruits(callback: CallbackQuery, callback_data: ProductCallback):
+async def show_fruits(callback: CallbackQuery):
     fruits = await ShopManager.get_fruits()
     await callback.message.edit_text(
         "Фрукты в наличии:", reply_markup=fruits_menu_kb(products=fruits)

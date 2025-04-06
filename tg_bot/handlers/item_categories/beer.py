@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
-from tg_bot.keyboards.callback_data import ShopMenuCallback, ProductCallback
+from tg_bot.keyboards.callback_data import ShopMenuCallback
 from tg_bot.keyboards.keyboard import fruits_menu_kb
 from tg_bot.services.shop_manager import ShopManager
 

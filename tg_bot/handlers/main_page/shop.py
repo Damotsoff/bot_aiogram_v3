@@ -12,10 +12,6 @@ from tg_bot.keyboards.callback_data import (
 from tg_bot.keyboards.keyboard import main_menu_kb, shop_menu_kb, purchased_kb, admin_kb
 
 ADMIN = load_config().tg_bot.admin
-
-
-from tg_bot.services.shop_manager import ShopManager
-
 router = Router()
 
 
@@ -51,34 +47,3 @@ async def view_product(callback: CallbackQuery, callback_data: ProductCallback):
         f"Товар ID: {callback_data.id}\n\nЦена: {callback_data.price} руб.",
         reply_markup=purchased_kb(callback_data=callback_data),
     )
-
-
-@router.callback_query(ProductCallback.filter(F.action == "buy"))
-async def purchased(callback: CallbackQuery, callback_data: ProductCallback):
-    balance = await ShopManager.get_balance(callback.from_user.id)
-    product = await ShopManager.get_products(id=callback_data.id)
-    assert balance >= 0, "Значение не может быть меньше нуля!"
-    if not product:
-        return
-    if product.quantity < 1:
-        await callback.message.edit_text(
-            text="Товар закончился", reply_markup=shop_menu_kb()
-        )
-    elif product.quantity >= 1 and balance >= callback_data.price:
-        await ShopManager.update_products(callback_data.id)
-        await ShopManager.update_balance(callback.from_user.id, callback_data.price)
-        await ShopManager.add_history(
-            user_id=callback.from_user.id,
-            product_id=callback_data.id,
-            price=callback_data.price,
-            quantity=1,
-        )
-        await callback.message.edit_text(
-            text=f"Поздравляю Вы купили 1 {callback_data.product}.Остаток обновлен.",
-            reply_markup=shop_menu_kb(),
-        )
-    else:
-        await callback.message.edit_text(
-            text="недостаточно средств", reply_markup=shop_menu_kb()
-        )
-        return

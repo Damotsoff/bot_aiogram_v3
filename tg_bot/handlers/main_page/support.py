@@ -1,17 +1,13 @@
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
+from tg_bot.states.states import SupportStates
 from tg_bot.keyboards.keyboard import support_kb
 from tg_bot.keyboards.callback_data import MainMenuCallback, SupportCallback
 from tg_bot.services.shop_manager import ShopManager
 
 
 router = Router()
-
-
-class SupportStates(StatesGroup):
-    waiting_for_support_text = State()
 
 
 @router.callback_query(MainMenuCallback.filter(F.section == "support"))
