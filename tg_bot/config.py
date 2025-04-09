@@ -7,13 +7,18 @@ class TgBot:
     token: str
     admin: int
     database_url: str
+    blockcypher: str
 
     @classmethod
     def from_env(cls, env: Env) -> "TgBot":
         token = env.str("BOT_TOKEN")
         admin = env.int("ADMIN")
         database_url = env.str("DATABASE_URL")
-        return TgBot(token=token, admin=admin, database_url=database_url)
+        blockcypher = env.str("BLOCKCYPHER_TOKEN")
+
+        return TgBot(
+            token=token, admin=admin, database_url=database_url, blockcypher=blockcypher
+        )
 
 
 @dataclass
